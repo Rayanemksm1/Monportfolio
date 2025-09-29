@@ -1,0 +1,72 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+
+/* Menu de navigation */
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    display: block;
+    font-size: 16px;
+}
+
+/* Sous-menus */
+.submenu {
+    display: none;
+    list-style: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    margin: 0;
+    padding: 0;
+}
+
+.submenu li a {
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.submenu li a:hover {
+    background-color: #666;
+}
+
+/* Affichage des sous-menus au survol */
+.menu-item:hover .submenu {
+    display: block;
+}
+
+/* Effet au survol du menu */
+.menu-item:hover > a {
+    background-color: #555;
+}
