@@ -1,76 +1,1270 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sommaire + Menu déroulant</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Systèmes d'Information</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========================================
+           RESET ET BASE
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
+            background-attachment: fixed;
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           HEADER
+           ======================================== */
+        header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem 0;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           NAVIGATION
+           ======================================== */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+            position: sticky;
+            top: 108px;
+            z-index: 999;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #0ea5e9;
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            padding: 0.9rem 1.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.1);
+            outline: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.2);
+            border-color: rgba(14, 165, 233, 0.6);
+            background: #f0f9ff;
+        }
+
+        .nav-btn:active {
+            transform: translateY(0);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            color: white;
+            border-color: #0ea5e9;
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+        }
+
+        /* ========================================
+           MAIN CONTENT
+           ======================================== */
+        main {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem 3rem;
+        }
+
+        /* ========================================
+           SECTIONS
+           ======================================== */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-intro {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.1);
+            text-align: center;
+            border: 2px solid rgba(14, 165, 233, 0.1);
+        }
+
+        .section-intro h2 {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .section-intro p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        /* ========================================
+           CARDS
+           ======================================== */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid rgba(14, 165, 233, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.15);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        .card-title {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, #0ea5e9, #3b82f6) 1;
+            font-weight: 800;
+        }
+
+        .card-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            font-size: 1rem;
+        }
+
+        /* ========================================
+           CONTENT AREA
+           ======================================== */
+        .content-area {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 2rem;
+            min-height: 200px;
+            border-left: 4px solid #0ea5e9;
+            box-shadow: inset 0 2px 10px rgba(14, 165, 233, 0.05);
+        }
+
+        .content-area p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+
+        .content-area h4 {
+            color: #0ea5e9;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .content-area ul {
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+            color: #475569;
+        }
+
+        .content-area ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* ========================================
+           GRIDS
+           ======================================== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* ========================================
+           CERTIFICATION CARDS
+           ======================================== */
+        .cert-card {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.4);
+        }
+
+        .cert-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .cert-card p {
+            margin: 0.5rem 0;
+            font-weight: 600;
+        }
+
+        /* ========================================
+           FILE LIST
+           ======================================== */
+        .file-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            background: white;
+            padding: 1.2rem 1.8rem;
+            margin: 0.8rem 0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(14, 165, 233, 0.1);
+        }
+
+        .file-item:hover {
+            background: #f0f9ff;
+            transform: translateX(10px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.15);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        .file-item span {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .file-item a {
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .file-item a:hover {
+            color: #3b82f6;
+            background: rgba(14, 165, 233, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* ========================================
+           INFO BOX
+           ======================================== */
+        .info-box {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-left: 4px solid #0ea5e9;
+            padding: 1.2rem 1.8rem;
+            margin: 1rem 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.1);
+        }
+
+        .info-box strong {
+            color: #0ea5e9;
+            font-weight: 700;
+        }
+
+        .info-box h4 {
+            color: #0ea5e9;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .info-box p {
+            color: #475569;
+            margin: 0;
+        }
+
+        /* ========================================
+           SOUTENANCE SPECIFIC STYLES
+           ======================================== */
+        .page-title {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .site-link-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.1);
+            border: 2px solid rgba(14, 165, 233, 0.1);
+        }
+
+        .site-link-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .site-link-header i {
+            color: #0ea5e9;
+            font-size: 1.5rem;
+        }
+
+        .site-link-header h3 {
+            color: #0ea5e9;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .site-link-content {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #siteUrl {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #siteUrl:focus {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .site-note {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .section-subtitle {
+            color: #0ea5e9;
+            font-size: 1.8rem;
+            margin: 2rem 0 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .livrables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .livrable-item {
+            background: white;
+            border-radius: 15px;
+            padding: 1.8rem;
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(14, 165, 233, 0.1);
+        }
+
+        .livrable-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(14, 165, 233, 0.15);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        .livrable-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .livrable-icon {
+            color: #0ea5e9;
+            font-size: 2rem;
+        }
+
+        .livrable-header h3 {
+            color: #1e293b;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .livrable-type {
+            background: rgba(14, 165, 233, 0.1);
+            color: #0ea5e9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .livrable-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .btn-download-livrable {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download-livrable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        /* ========================================
+           QUICK LINKS
+           ======================================== */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .quick-link {
+            background: white;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+        }
+
+        .quick-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.2);
+            border-color: rgba(14, 165, 233, 0.4);
+        }
+
+        .quick-link i {
+            font-size: 2rem;
+            color: #0ea5e9;
+            min-width: 40px;
+        }
+
+        .quick-link h4 {
+            color: #1e293b;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+
+        .quick-link p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .pdf-modal {
+	    display: none;
+	    position: fixed;
+	    inset: 0;
+	    background: rgba(0,0,0,0.8);
+	    backdrop-filter: blur(4px);
+	    justify-content: center;
+	    align-items: center;
+	    z-index: 9999;
+	}
+
+	.pdf-modal.active {
+	    display: flex;
+	}
+
+	.pdf-modal-content {
+	    width: 80%;
+	    height: 80%;
+	    background: white;
+	    border-radius: 10px;
+	    overflow: hidden;
+	    position: relative;
+	    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+	}
+
+	.pdf-frame {
+	    width: 100%;
+	    height: 100%;
+	    border: none;
+	}
+
+	.pdf-close {
+	    position: absolute;
+	    right: 15px;
+	    top: 10px;
+	    background: #ef4444;
+	    color: white;
+	    border: none;
+	    padding: 10px 15px;
+	    font-size: 18px;
+	    border-radius: 6px;
+	    cursor: pointer;
+	}
+
+        /* ========================================
+           FOOTER
+           ======================================== */
+        footer {
+            background: white;
+            padding: 2.5rem;
+            text-align: center;
+            margin-top: 4rem;
+            box-shadow: 0 -4px 20px rgba(14, 165, 233, 0.1);
+            border-top: 2px solid rgba(14, 165, 233, 0.1);
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        footer p:last-child {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN
+           ======================================== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .section-intro h2 {
+                font-size: 1.7rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            nav {
+                top: 104px;
+            }
+
+            .nav-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-btn {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            main {
+                margin: 2rem auto;
+                padding: 0 1rem 2rem;
+            }
+
+            .card {
+                padding: 1.8rem;
+            }
+
+            .content-area {
+                padding: 1.5rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .file-item {
+                flex-direction: column;
+                gap: 0.8rem;
+                text-align: center;
+            }
+
+            .site-link-content {
+                flex-direction: column;
+            }
+
+            .livrables-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========================================
+           SMOOTH SCROLLING
+           ======================================== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ========================================
+           CUSTOM SCROLLBAR
+           ======================================== */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="header-content">
+            <h1>Portfolio SI </h1>
+            <p class="subtitle">Introduction aux Systèmes d'Information </p>
+        </div>
+    </header>
 
-  <!-- Barre de navigation avec menu déroulant -->
-  <header class="site-header">
-    <nav class="nav">
-      <a class="logo" href="#">MonSite</a>
-
-      <ul class="nav-list">
-        <li><a href="#sommaire">Sommaire</a></li>
-
-        <!-- Lien avec menu déroulant -->
-        <li class="dropdown" aria-haspopup="true">
-          <a href="#" class="dropdown-toggle" aria-expanded="false">Ressources ▾</a>
-          <ul class="dropdown-menu" aria-label="Sous-menu Ressources">
-            <li><a href="#intro">Introduction</a></li>
-            <li><a href="#chapitre-1">Chapitre 1</a></li>
-            <li><a href="#chapitre-2">Chapitre 2</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </li>
-
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+    <nav>
+        <div class="nav-content">
+            <button class="nav-btn active" onclick="showSection('accueil')">Accueil</button>
+            <button class="nav-btn" onclick="showSection('travaux')">Travaux Demandés</button>
+            <button class="nav-btn" onclick="showSection('notes')">Notes de Cours</button>
+            <button class="nav-btn" onclick="showSection('documents')">Documents SI</button>
+            <button class="nav-btn" onclick="showSection('certifications')">Certifications</button>
+            <button class="nav-btn" onclick="showSection('projet')">Projet Final</button>
+            <button class="nav-btn" onclick="showSection('soutenance')">Soutenance</button>
+        </div>
     </nav>
-  </header>
 
-  <!-- Contenu principal -->
-  <main class="container">
-    <section id="sommaire" class="card">
-      <h1>Sommaire</h1>
-      <p>Cette page présente un sommaire et un lien avec menu déroulant dans la barre de navigation.</p>
+    <main>
+        <!-- Section Accueil -->
+        <section id="accueil" class="section active">
+            <div class="section-intro">
+                <h2>Bienvenue sur mon Portfolio</h2>
+                <p>Ce portfolio présente l'ensemble de mes travaux réalisés dans le cadre du module <strong>Introduction aux Systèmes d'Information</strong>.</p>
+            </div>
 
-      <ol class="toc">
-        <li><a id="intro" href="#intro-section">Introduction</a></li>
-        <li><a id="chapitre-1" href="#chapitre-1-section">Chapitre 1 – Bases</a></li>
-        <li><a id="chapitre-2" href="#chapitre-2-section">Chapitre 2 – Approfondissement</a></li>
-        <li><a id="contact" href="#contact-section">Contact</a></li>
-      </ol>
-    </section>
+            <div class="card">
+                <h3 class="card-title">Navigation Rapide</h3>
+                <div class="quick-links">
+                    <a href="#" class="quick-link" onclick="event.preventDefault(); showSection('travaux')">
+                        <i class="fas fa-book"></i>
+                        <div>
+                            <h4>Travaux Demandés</h4>
+                            <p>TD, TP et exercices</p>
+                        </div>
+                    </a>
+                    <a href="#" class="quick-link" onclick="event.preventDefault(); showSection('notes')">
+                        <i class="fas fa-pencil-alt"></i>
+                        <div>
+                            <h4>Notes de Cours</h4>
+                            <p>Mes prises de notes</p>
+                        </div>
+                    </a>
+                    <a href="#" class="quick-link" onclick="event.preventDefault(); showSection('documents')">
+                        <i class="fas fa-folder-open"></i>
+                        <div>
+                            <h4>Documents SI</h4>
+                            <p>Documentation technique</p>
+                        </div>
+                    </a>
+                    <a href="#" class="quick-link" onclick="event.preventDefault(); showSection('certifications')">
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <h4>Certifications</h4>
+                            <p>Mes attestations</p>
+                        </div>
+                    </a>
+                    <a href="#" class="quick-link" onclick="event.preventDefault(); showSection('projet')">
+                        <i class="fas fa-rocket"></i>
+                        <div>
+                            <h4>Projet Final</h4>
+                            <p>Adoo Sneakers PGI</p>
+                        </div>
+                    </a>
+                    <a href="#" class="quick-link" onclick="event.preventDefault(); showSection('soutenance')">
+                        <i class="fas fa-presentation"></i>
+                        <div>
+                            <h4>Soutenance</h4>
+                            <p>Livrables et présentation</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-    <section id="intro-section" class="card">
-      <h2>Introduction</h2>
-      <p>Exemple de section reliée depuis le sommaire et le menu déroulant.</p>
-    </section>
+       <!-- Section 1: Travaux DemandÃ©s -->
+        <section id="travaux" class="section">
+            <div class="section-intro">
+                <h2>📚 Travaux Demandés</h2>
+                <p>Exercices réalisés en classe</p>
+            </div>
 
-    <section id="chapitre-1-section" class="card">
-      <h2>Chapitre 1 – Bases</h2>
-      <p>Contenu de démonstration…</p>
-    </section>
+            <ul class="file-list">
+                <!-- TD1 -->
+                <li class="file-item">
+                    <span>📄 TD1 - Systèmes d'Information</span>
+                    <a href="TD1 SI.pdf" onclick="openPdfViewer('TD1 SI.pdf')">
+                        Voir →
+                    </a>
+                 <li class="file-item">
+                    <span>📊 PGI Exercice - Excel</span>
+                    <a href="PGI_exercicevf.xls" download="PGI_exercicevf.xls">
+                        Télecharger →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 TD PGI Exercice </span>
+                    <a href="td_PGI_exercice.pdf" onclick="openPdfViewer('td_PGI_exercice.pdf')">
+                        Voir →
+                    </a>
+                <!-- TD2 -->
+                <li class="file-item">
+                    <span>📄 TD2 - Etudes de cas</span>
+                    <a href="TD2 si.pdf" onclick="openPdfViewer('TD2 si.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 TP Odoo </span>
+                    <a href="Tp odoo.pdf" onclick="openPdfViewer('Tp odoo.pdf')">
+                         Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 Diagramme acteur flux</span>
+                    <a href="diagramme acteur_flux.pdf" onclick="openPdfViewer('diagramme acteur_flux.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 Schéma Réservation draw.io</span>
+                    <a href="schema evenement_résultat.pdf" onclick="openPdfViewer('schema evenement_résultat.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 Diagramme de Gantt </span>
+                    <a href="diag_gantt.pdf"onclick="openPdfViewer('diag_gantt.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 MCD Diagramme</span>
+                    <a href="MCD_diagramme.pdf" onclick="openPdfViewer('MCD_diagramme.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                
+                </li>
+                <li class="file-item">
+                    <span>📄 TP Gantt - ODT</span>
+                    <a href="tp gantt.pdf" onclick="openPdfViewer('tp gantt.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 Training Schéma Acteur Flux</span>
+                    <a href="training shéma acteur flux.pdf" onclick="openPdfViewer('training shéma acteur flux.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 TD MCD</span>
+                    <a href="TD MCD.pdf" onclick="openPdfViewer('TD MCD.pdf')">
+                        Voir →
+                    </a>
+                </li>
+                <li class="file-item">
+                    <span>📄 Exercice USE CASE</span>
+                    <a href="USE CASE.pdf" onclick="openPdfViewer('USE CASE.pdf')">
+                        Voir →
+                    </a>
+                </li>
+            </ul>
+        </section>
 
-    <section id="chapitre-2-section" class="card">
-      <h2>Chapitre 2 – Approfondissement</h2>
-      <p>Contenu de démonstration…</p>
-    </section>
+        <!-- Section 2: Notes de Cours -->
+        <section id="notes" class="section">
+            <div class="section-intro">
+                <h2>📝 Notes de Cours Individuelles</h2>
+                <p>Prise de notes durant les cours</p>
+            </div>
 
-    <section id="contact-section" class="card">
-      <h2>Contact</h2>
-      <p>rayanemksm5@gmail.com</p>
-    </section>
-  </main>
+            <div class="card">
+                <h3 class="card-title">Rubrique 2 : Mes Notes de Cours</h3>
+                <p class="card-description">Développer une autonomie dans la prise de notes</p>
+                <div class="content-area">
+                    <h4 style="color: #22d3ee; margin: 1.5rem 0 1rem;">Cours 1 : Notes de cours</h4>
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <span>📄 Notes de Cours SI - 15/09</span>
+                            <a href="NOTES DE COURS SI 15_09.pdf" onclick="openPdfViewer('NOTES DE COURS SI 15_09.pdf')">
+                                Voir →
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h4 style="color: #22d3ee; margin: 1.5rem 0 1rem;">Cours dossier 3</h4>
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <span>📄 Processus de gestion & modélisation </span>
+                            <a href="dossier 3.pdf" onclick="openPdfViewer('dossier 3.pdf')">
+                                Voir →
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h4 style="color: #22d3ee; margin: 1.5rem 0 1rem;">Cours Dossier Gestion de Projet</h4>
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <span>📄 Gestion de Projet</span>
+                            <a href="dossier gestion projet.pdf" onclick="openPdfViewer('dossier gestion projet.pdf')">
+                               Voir →
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h4 style="color: #22d3ee; margin: 1.5rem 0 1rem;">Cours les livrables SI</h4>
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <span>📄 Les Livrables SI</span>
+                            <a href="les livrables SI.pdf"onclick="openPdfViewer('les livrables SI.pdf')">
+                                Voir →
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h4 style="color: #22d3ee; margin: 1.5rem 0 1rem;">Cours : Document synthétique des phases SI</h4>
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <span>📄 Document synthétique des phases SI</span>
+                            <a href="Document synthétique des phases.pdf" onclick="openPdfViewer('Document synthétique des phases.pdf')">
+                                Voir →
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-  <footer class="site-footer">
-    <small>© 2025 — Portfolio SI MEKSEM RAYANE</small>
-  </footer>
+        <!-- Section 3: Documents SI -->
+        <section id="documents" class="section">
+            <div class="section-intro">
+                <h2>📋 Documents d'un Système d'Information</h2>
+                <p>Identifier, rédiger et organiser les documents SI</p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Rubrique 3 : Documentation SI</h3>
+                <p class="card-description">Documents liés à un système d'information</p>
+                <div class="content-area">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <span>📄 Cours Information </span>
+                            <a href="cours information.pdf" onclick="openPdfViewer('cours information.pdf')">
+                                Voir →
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+         <!-- Section 4: Certifications -->
+        <section id="certifications" class="section">
+            <div class="section-intro">
+                <h2>🏆 Certifications et Attestations</h2>
+                <p>Valorisation des compétences acquises</p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Rubrique 4 : Mes Certifications</h3>
+                <p class="card-description">Attestations et certifications obtenues</p>
+
+            </div>
+        </section>
+
+        <!-- Section 5: Projet Final -->
+<section id="projet" class="section">
+    <div class="section-intro">
+        <h2>🚀 Projet Final</h2>
+        <p>Conception, analyse et réalisation complète d'un système d'information</p>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">🌐 Projet : ABS </h3>
+        <p class="card-description">Développement d’un site web complet de ventes de matériaux de construction</p>
+
+        <div class="content-area">
+            <h4 style="color: #22d3ee; margin-bottom: 1rem;">📌 Présentation du projet</h4>
+            <p style="text-align: justify; line-height: 1.7;">
+                ABS est un site web professionnel dédié à la vente de matériaux de construction, conçu pour faciliter l’achat de produits destinés aux particuliers comme aux professionnels du BTP.
+                Le projet consiste à créer une plateforme e-commerce spécialisée, simple d’utilisation, moderne et adaptée aux besoins d’un secteur technique.
+            </p>
+
+            <h4 style="color: #22d3ee; margin: 1.5rem 0 0.8rem;">🛠 Technologies utilisées</h4>
+            <ul style="margin-left: 1.2rem;">
+                <li>HTML / CSS / PHP</li>
+                <li>Base de données: MySQL</li>
+                <li>Hébergement Web : InfinityFree</li>
+            </ul>
+
+            <h4 style="color: #22d3ee; margin: 1.5rem 0 1rem; text-align:center;">
+                🔗 Accéder au site, au dépôt GitHub et à mon profil
+            </h4>
+
+            <div style="text-align: center; display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+
+                <!-- Bouton vers le site -->
+                <a href="https://abs.great-site.net" 
+                   target="_blank"
+                   style="
+                       display: inline-block;
+                       background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+                       color: white;
+                       padding: 1rem 2rem;
+                       border-radius: 12px;
+                       font-size: 1.2rem;
+                       font-weight: 700;
+                       text-decoration: none;
+                       transition: 0.3s;
+                   "
+                   onmouseover="this.style.transform='scale(1.05)'"
+                   onmouseout="this.style.transform='scale(1)'">
+                    🚀 Voir le site du projet
+                </a>
+
+                <!-- Bouton GitHub projet -->
+                <a href="https://github.com/Rayanemksm1/abs" 
+                   target="_blank"
+                   style="
+                       display: inline-block;
+                       background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+                       color: white;
+                       padding: 1rem 2rem;
+                       border-radius: 12px;
+                       font-size: 1.2rem;
+                       font-weight: 700;
+                       text-decoration: none;
+                       transition: 0.3s;
+                   "
+                   onmouseover="this.style.transform='scale(1.05)'"
+                   onmouseout="this.style.transform='scale(1)'">
+                    💻 Voir le dépôt GitHub
+                </a>
+
+                <!-- Bouton profil GitHub -->
+                <a href="https://github.com/Rayanemksm1"
+                   target="_blank"
+                   style="
+                       display: inline-block;
+                       background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+                       color: white;
+                       padding: 1rem 2rem;
+                       border-radius: 12px;
+                       font-size: 1.2rem;
+                       font-weight: 700;
+                       text-decoration: none;
+                       transition: 0.3s;
+                   "
+                   onmouseover="this.style.transform='scale(1.05)'"
+                   onmouseout="this.style.transform='scale(1)'">
+                    🌟 Mon profil GitHub
+                </a>
+
+            </div>
+
+            <p style="margin-top: 1.2rem; color:#64748b; font-size:0.9rem; text-align:center;">
+                Découvrez mes autres projets sur mon portfolio GitHub.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+
+        <!-- Section 6: Soutenance -->
+	<section id="soutenance" class="section">
+	    <h1 class="page-title">Soutenance de Projet</h1>
+
+	    <!-- Sommaire des livrables -->
+	    <h2 class="section-subtitle">
+		<i class="fas fa-file-invoice"></i>
+		Les livrables
+	    </h2>
+
+	    <div class="livrables-grid">
+
+		<!-- Cahier des charges -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-file-alt livrable-icon"></i>
+		        <div>
+		            <h3>Cahier des charges</h3>
+		            <span class="livrable-type">PDF</span>
+		        </div>
+		    </div>
+		    <p class="livrable-description">Document définissant les besoins et spécifications du projet.</p>
+		    <a href="Cahier_des_charges.pdf" onclick="openPdfViewer('Cahier_des_charges.pdf')">Voir →</a>
+		</div>
+
+		<!-- Plan du projet -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-project-diagram livrable-icon"></i>
+		        <div>
+		            <h3>Plan du projet</h3>
+		            <span class="livrable-type">PDF</span>
+		        </div>
+		    </div>
+		    <a href="Plan_Projet_ABS.pdf" onclick="openPdfViewer('Plan_Projet_ABS.pdf')">Voir →</a>
+		</div>
+
+		<!-- SFD -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-sitemap livrable-icon"></i>
+		        <div>
+		            <h3>Spécifications Fonctionnelles Détaillées (SFD)</h3>
+		            <span class="livrable-type">PDF</span>
+		        </div>
+		    </div>
+		    <a href="SFD.pdf" onclick="openPdfViewer('SFD.pdf')">Voir →</a>
+		</div>
+
+		<!-- SFG -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-sitemap livrable-icon"></i>
+		        <div>
+		            <h3>Spécifications Fonctionnelles Générales (SFG)</h3>
+		            <span class="livrable-type">PDF</span>
+		        </div>
+		    </div>
+		    <a href="SFG.pdf" onclick="openPdfViewer('SFG.pdf')">Voir →</a>
+		</div>
+
+		<!-- Diagramme des flux -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-exchange-alt livrable-icon"></i>
+		        <div>
+		            <h3>Diagramme des flux</h3>
+		            <span class="livrable-type">PDF</span>
+		        </div>
+		    </div>
+		    <a href="Diagramme_des_flux.pdf" onclick="openPdfViewer('Diagramme_des_flux.pdf')">Voir →</a>
+		</div>
+
+		<!-- Diagramme image -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-image livrable-icon"></i>
+		        <div>
+		            <h3>Diagramme (image)</h3>
+		            <span class="livrable-type">Image</span>
+		        </div>
+		    </div>
+		    <a href="Diagramme.png" target="_blank">Voir →</a>
+		</div>
+
+		<!-- Maquette Figma : Panier -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-shopping-cart livrable-icon"></i>
+		        <div>
+		            <h3>Maquette Figma – Panier</h3>
+		            <span class="livrable-type">Image</span>
+		        </div>
+		    </div>
+		    <a href="Panier_figma.png" target="_blank">Voir →</a>
+		</div>
+
+		<!-- Maquette Figma : Produit -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-box livrable-icon"></i>
+		        <div>
+		            <h3>Maquette Figma – Produit</h3>
+		            <span class="livrable-type">Image</span>
+		        </div>
+		    </div>
+		    <a href="Produit_figma.png" target="_blank">Voir →</a>
+		</div>
+
+		<!-- Maquette Figma : Accueil -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-home livrable-icon"></i>
+		        <div>
+		            <h3>Maquette Figma – Accueil</h3>
+		            <span class="livrable-type">Image</span>
+		        </div>
+		    </div>
+		    <a href="Accueil_figma.jpg" target="_blank">Voir →</a>
+		</div>
+
+		<!-- Guide installation -->
+		<div class="livrable-item">
+		    <div class="livrable-header">
+		        <i class="fas fa-tools livrable-icon"></i>
+		        <div>
+		            <h3>Guide d'installation</h3>
+		            <span class="livrable-type">Markdown</span>
+		        </div>
+		    </div>
+		    <a href="README.md" target="_blank">Voir →</a>
+		</div>
+
+	    </div>
+	</section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 - MEKSEM Rayane SI</p>
+    </footer>
+
+    <script src="script.js"></script>
+    
+</div>
+<!-- ===== POPUP PDF ===== -->
+<div id="pdfModal" class="pdf-modal">
+    <div class="pdf-modal-content">
+        <button class="pdf-close" onclick="closePdfViewer()">✖</button>
+        <iframe id="pdfFrame" class="pdf-frame"></iframe>
+    </div>
+</div>
 
 </body>
 </html>
-
